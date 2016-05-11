@@ -14,7 +14,12 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.io.*;
 
- 
+/*
+ * Ce programme fonctionne complètement comme la classe fenetre13
+ * La seule différence est dans la création des tableaux de joueurs et de jeu
+ * On récupère le tableau stocké plutôt que d'en créer un aléatoire
+ */
+
 public class fenetre13sau extends JFrame implements ActionListener {
 	
 	int exist=0;
@@ -699,15 +704,19 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  redessin(1);
   }
   
+  //fonction permettant de récuperer le tableau enregistré
   public int[][] tableaujeu() {
+	  //création du tableau 13x13 vide
 		int[][] tableaujeu = new int[13][13];
 		try {
+			//ouverture du fichier pour permettre la lecture
 			InputStream ips=new FileInputStream("sauvegardes/partie13carre/sauvegarde.txt"); 
 			InputStreamReader ipsr=new InputStreamReader(ips);
 			BufferedReader br=new BufferedReader(ipsr);
 			String chiffre;
 			int i = 0;
 			int j = 0;
+			//on ajoute chaque chiffre là où il faut (à la suite)
 			while((chiffre=br.readLine()) != null){
 				exist++;
 				int x = Integer.parseInt(chiffre);
@@ -729,6 +738,7 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		return tableaujeu;
 	}
 	
+  //on fait de même pour le tableau des joueurs
 	public int[][] tableaujoueur() {
 		int[][] tableaujoueur = new int[13][13];
 		
@@ -795,7 +805,7 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		
 		return joueur;
 	}
-	
+	//récupération du nombre de joueurs
 	public int nbrejoueur() {
 		int recupjoueur = 0;
 		try {

@@ -567,7 +567,7 @@ public class fenetre13 extends JFrame implements ActionListener {
   }
   
   public void joueur4(int h) {
-	  tesst();
+
 	  for (int i = 0; i<13; i++) {
 			for (int j = 0; j<13; j++) {
 				if (tableaujoueur[i][j]==4) {

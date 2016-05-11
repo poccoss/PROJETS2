@@ -9,7 +9,7 @@ import java.awt.Font;
 public class explications extends JFrame {
 	public explications(){
 		  this.setTitle("Règles");
-		  this.setSize(650, 650);
+		  this.setSize(920, 300);
 		  //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		  this.setLocationRelativeTo(null);
 		  

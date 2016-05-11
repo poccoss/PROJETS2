@@ -54,42 +54,6 @@ public class Fenetre extends JFrame implements ActionListener {
 	  jouerlo.setActionCommand("jouerlo");
 	  partielo.add(jouerlo);
 	  
-	  JPanel troisiemetexte = new JPanel();
-	  troisiemetexte.setLayout(new BoxLayout(troisiemetexte, BoxLayout.LINE_AXIS));
-	  JLabel joueurVSIA = new JLabel("Joueur VS IA");
-	  joueurVSIA.setFont(new Font("Tahoma", Font.BOLD, 40));
-	  troisiemetexte.add(joueurVSIA);
-	  
-	  JPanel IAfacile = new JPanel();
-	  IAfacile.setLayout(new BoxLayout(IAfacile, BoxLayout.LINE_AXIS));
-	  JButton iafa = new JButton("facile");
-	  iafa.addActionListener(this);
-	  iafa.setActionCommand("iafacile");
-	  IAfacile.add(iafa);
-	  
-	  JPanel partiesauvfa = new JPanel();
-	  //Idem pour cette ligne
-	  partiesauvfa.setLayout(new BoxLayout(partiesauvfa, BoxLayout.LINE_AXIS));
-	  JButton partiesauv13fa = new JButton("terminer la partie en cours");
-	  partiesauv13fa.addActionListener(this);
-	  partiesauv13fa.setActionCommand("partiesauv13fa");
-	  partiesauvfa.add(partiesauv13fa);
-	  
-	  JPanel IAdifficile = new JPanel();
-	  IAdifficile.setLayout(new BoxLayout(IAdifficile, BoxLayout.LINE_AXIS));
-	  JButton iadi = new JButton("difficile");
-	  iadi.addActionListener(this);
-	  iadi.setActionCommand("iadifficile");
-	  IAdifficile.add(iadi);
-	  
-	  JPanel partiesauvdi = new JPanel();
-	  //Idem pour cette ligne
-	  partiesauvdi.setLayout(new BoxLayout(partiesauvdi, BoxLayout.LINE_AXIS));
-	  JButton partiesauv13di = new JButton("terminer la partie en cours");
-	  partiesauv13di.addActionListener(this);
-	  partiesauv13di.setActionCommand("partiesauv13di");
-	  partiesauvdi.add(partiesauv13di);
-	  
 	  JPanel fin = new JPanel();
 	  //On positionne maintenant ces trois lignes en colonne
 	  fin.setLayout(new BoxLayout(fin, BoxLayout.PAGE_AXIS));
@@ -98,11 +62,6 @@ public class Fenetre extends JFrame implements ActionListener {
 	  fin.add(partie13);
 	  fin.add(partiesauv);
 	  fin.add(partielo);
-	  fin.add(troisiemetexte);
-	  fin.add(IAfacile);
-	  fin.add(partiesauvfa);
-	  fin.add(IAdifficile);
-	  fin.add(partiesauvdi);
 	  
 	  
 	  
@@ -119,14 +78,8 @@ public class Fenetre extends JFrame implements ActionListener {
 	  if (action.getActionCommand()=="jouerlo") {
 		  Test.jeulo();
 	  }
-	  if (action.getActionCommand()=="iafacile") {
-		  Test.IAfacile();
-	  }
 	  if (action.getActionCommand()=="partiesauv13") {
 		  Test.fenetre13sau();
-	  }
-	  if (action.getActionCommand()=="partiesauv13fa") {
-		  Test.fenetre13saufa();
 	  }
   }
 }

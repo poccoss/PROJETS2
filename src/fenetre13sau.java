@@ -47,13 +47,14 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	JButton IAdifficile2 = new JButton("ajouter une AI");
 	JButton IAdifficile3 = new JButton("ajouter une AI");
 	int joueur = joueur();
-	int nbrejoueur = 2;
+	int nbrejoueur = nbrejoueur();
 	int[][] tableau = tableaujeu();
 	int[][] tableaujoueur = tableaujoueur();
 	
 	
 	
 	public fenetre13sau(){
+		System.out.println(nbrejoueur);
 	  this.setTitle("JEU");
 	  this.setSize(650, 650);
 	  //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,15 +92,18 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  score3.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  score3.setForeground(Color.black);
 	  score3.setHorizontalAlignment(JLabel.CENTER);
-	  score3.setText(Integer.toString(compte(tableaujoueur, 3)));
+	  if (joueur3.getText()=="Joueur 3" || joueur3.getText().startsWith("IA")) {
+		  score3.setText(Integer.toString(compte(tableaujoueur, 3)));
+	  }
 	  joueur4.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  joueur4.setForeground(Color.black);
 	  joueur4.setHorizontalAlignment(JLabel.CENTER);
 	  score4.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  score4.setForeground(Color.black);
 	  score4.setHorizontalAlignment(JLabel.CENTER);
-	  score4.setText(Integer.toString(compte(tableaujoueur, 4)));
-	  
+	  if (joueur4.getText()=="Joueur 4" || joueur4.getText().startsWith("IA")) {
+		  score4.setText(Integer.toString(compte(tableaujoueur, 4)));
+	  }
 	  sauvegarde.setActionCommand("sauvegarde");
 	  sauvegarde.addActionListener(this);
 	  
@@ -139,10 +143,6 @@ public class fenetre13sau extends JFrame implements ActionListener {
 
   
   public void joueur1(int h) {
-	  scores.remove(ajoutjoueur);
-	  scores.remove(ajoutjoueur4);
-	  scores.remove(IAdifficile2);
-	  scores.remove(IAdifficile3);
 	  choix.dispose();
 	  for (int i = 0; i<13; i++) {
 			for (int j = 0; j<13; j++) {
@@ -183,17 +183,20 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 1);
-	  if (compte>=85 && joueur3.getText()=="" && joueur4.getText()=="") {
+	  if (compte>=85 && nbrejoueur==2) {
 		  //this.dispose();
 		  Test.victoire("Le joueur 1", compte);
+		  redessin(1);
 	  }
-	  else if (compte>=57 && joueur3.getText()!="" && joueur4.getText()=="") {
+	  else if (compte>=57 && nbrejoueur==3) {
 		  //this.dispose();
 		  Test.victoire("Le joueur 1", compte);
+		  redessin(1);
 	  }
-	  else if (compte>=43 && joueur3.getText()!="" && joueur4.getText()!="") {
+	  else if (compte>=43 && nbrejoueur==4) {
 		  //this.dispose();
 		  Test.victoire("Le joueur 1", compte);
+		  redessin(1);
 	  }
 	  score1.setText(Integer.toString(compte));
 	  
@@ -222,7 +225,7 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  
 	  
 
-	  if (joueur2.getText()!="Joueur 2") {
+	  if (joueur2.getText().startsWith("IA")) {
 		  int k = IAdifficile(2);
 		  couleur2 = couleurs[k-1];
 		  joueur2(k);
@@ -264,10 +267,10 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		  }
 	  }
 	  
-	  if (joueur3.getText()=="Joueur 3") {
+	  if (joueur3.getText().startsWith("IA") || joueur3.getText().startsWith("Joueur")) {
 			redessin(3);
 		}
-		else if (joueur3.getText()=="") {
+	  else {
 			redessin(1);
 		}
 	  
@@ -275,21 +278,24 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 2);
-	  if (compte>=85 && joueur3.getText()=="" && joueur4.getText()=="") {
+	  if (compte>=85 && nbrejoueur==2) {
 		  //this.dispose();
+		  redessin(2);
 		  Test.victoire(joueur2.getText(), compte);
 	  }
-	  else if (compte>=57 && joueur3.getText()!="" && joueur4.getText()=="") {
+	  else if (compte>=57 && nbrejoueur==3) {
 		  //this.dispose();
+		  redessin(2);
 		  Test.victoire(joueur2.getText(), compte);
 	  }
-	  else if (compte>=43 && joueur3.getText()!="" && joueur4.getText()!="") {
+	  else if (compte>=43 && nbrejoueur==4) {
 		  //this.dispose();
+		  redessin(2);
 		  Test.victoire(joueur2.getText(), compte);
 	  }
 	  score2.setText(Integer.toString(compte));
 	  
-	  if (joueur3.getText()!="") {
+	  if (joueur3.getText().startsWith("IA") || joueur3.getText().startsWith("Joueur")) {
 		  joueur = 3;
 		  if (couleur3=="blue") {
 			  nom.setForeground(Color.BLUE);
@@ -312,13 +318,13 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		  
 		  nom.setText("au tour du Joueur 3");
 		  
-		  if (joueur3.getText()!="Joueur 3") {
+		  if (joueur3.getText().startsWith("IA")) {
 			  int k = IAdifficile(3);
 			  couleur3 = couleurs[k-1];
 			  joueur3(k);
 		  }
 	  }
-	  else if (joueur3.getText()=="") {
+	  else {
 		  joueur = 1;
 		  if (couleur1=="blue") {
 			  nom.setForeground(Color.BLUE);
@@ -379,10 +385,10 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  }
 	  
 	  
-	  if (joueur4.getText()=="Joueur 4") {
+	  if (joueur4.getText().startsWith("IA") || joueur4.getText().startsWith("Joueur")) {
 			redessin(4);
 	  }
-	  else if (joueur4.getText()=="") {
+	  else {
 			redessin(1);
 	  }
 	  
@@ -391,21 +397,24 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 3);
-	  if (compte>=85 && joueur3.getText()=="" && joueur4.getText()=="") {
+	  if (compte>=85 && nbrejoueur==2) {
 		  //this.dispose();
+		  redessin(3);
 		  Test.victoire(joueur3.getText(), compte);
 	  }
-	  else if (compte>=57 && joueur3.getText()!="" && joueur4.getText()=="") {
+	  else if (compte>=57 && nbrejoueur==3) {
 		  //this.dispose();
+		  redessin(3);
 		  Test.victoire(joueur3.getText(), compte);
 	  }
-	  else if (compte>=43 && joueur3.getText()!="" && joueur4.getText()!="") {
+	  else if (compte>=43 && nbrejoueur==4) {
 		  //this.dispose();
+		  redessin(3);
 		  Test.victoire(joueur3.getText(), compte);
 	  }
 	  score3.setText(Integer.toString(compte));
 	  
-	  if (joueur4.getText()!="") {
+	  if (joueur4.getText().startsWith("IA") || joueur4.getText().startsWith("Joueur")) {
 		  joueur = 4;
 		  
 		  if (couleur4=="blue") {
@@ -429,14 +438,14 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		  
 		  nom.setText("au tour du Joueur 4");
 		  
-		  if (joueur4.getText()!="Joueur 4") {
+		  if (joueur4.getText().startsWith("IA")) {
 			  int k = IAdifficile(4);
 			  couleur4 = couleurs[k-1];
 			  joueur4(k);
 		  }
 	  }
 	  
-	  else if (joueur4.getText()=="") {
+	  else {
 		  joueur = 1;
 		  
 		  if (couleur1=="blue") {
@@ -463,7 +472,6 @@ public class fenetre13sau extends JFrame implements ActionListener {
   }
   
   public void joueur4(int h) {
-	  tesst();
 	  for (int i = 0; i<13; i++) {
 			for (int j = 0; j<13; j++) {
 				if (tableaujoueur[i][j]==4) {
@@ -508,17 +516,20 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 4);
-	  if (compte>=85 && joueur3.getText()=="" && joueur4.getText()=="") {
+	  if (compte>=85 && nbrejoueur==2) {
 		  //this.dispose();
 		  Test.victoire(joueur4.getText(), compte);
+		  redessin(4);
 	  }
-	  else if (compte>=57 && joueur3.getText()!="" && joueur4.getText()=="") {
+	  else if (compte>=57 && nbrejoueur==3) {
 		  //this.dispose();
 		  Test.victoire(joueur4.getText(), compte);
+		  redessin(4);
 	  }
-	  else if (compte>=43 && joueur3.getText()!="" && joueur4.getText()!="") {
+	  else if (compte>=43 && nbrejoueur==4) {
 		  //this.dispose();
 		  Test.victoire(joueur4.getText(), compte);
+		  redessin(4);
 	  }
 	  score4.setText(Integer.toString(compte));
 	  
@@ -666,36 +677,6 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  if (action.getActionCommand()=="explication") {
 		  Test.explication();
 	  }
-	  if (action.getActionCommand()=="IAdifficile1") {
-		  joueur2.setText("IA 1");
-	  }
-	  if (action.getActionCommand()=="IAdifficile2") {
-		  nbrejoueur++;
-		  ajoutjoueur3();
-		  if (joueur2.getText()=="IA 1") {
-			  joueur3.setText("IA 2");
-		  }
-		  else {
-			  joueur3.setText("IA 1");
-		  }
-	  }
-	  if (action.getActionCommand()=="IAdifficile3") {
-		  nbrejoueur++;
-		  ajoutjoueur4();
-		  if (joueur2.getText()=="IA") {
-			  joueur2.setText("IA 1");
-			  joueur4.setText("IA 2");
-		  }
-		  else if (joueur2.getText()=="IA 1") {
-			  joueur4.setText("IA 3");
-		  }
-		  else if (joueur3.getText()=="IA 1") {
-			  joueur4.setText("IA 2");
-		  }
-		  else {
-			  joueur4.setText("IA 1");
-		  }
-	  }
   }
   
   public static void tesst() {
@@ -792,8 +773,6 @@ public class fenetre13sau extends JFrame implements ActionListener {
 				}
 				if (i==1) {
 					chiffre=br.readLine();
-					int x = Integer.parseInt(chiffre);
-					nbrejoueur=x;
 				}
 				if (i==2) {
 					chiffre=br.readLine();
@@ -815,6 +794,27 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		}
 		
 		return joueur;
+	}
+	
+	public int nbrejoueur() {
+		int recupjoueur = 0;
+		try {
+			InputStream ips=new FileInputStream("sauvegardes/partie13carre/joueur.txt"); 
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+			String chiffre;
+			
+			chiffre=br.readLine();
+			chiffre=br.readLine();
+			int x = Integer.parseInt(chiffre);
+			recupjoueur=x;
+			
+			br.close();
+		}
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+		return recupjoueur;
 	}
   
   public void redessin(int k) {
@@ -929,6 +929,12 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		  writer3.write(Integer.toString(joueur));
 		  writer3.write("\n");
 		  writer3.write(Integer.toString(nbrejoueur));
+		  writer3.write("\n");
+		  writer3.write(joueur2.getText());
+		  writer3.write("\n");
+		  writer3.write(joueur3.getText());
+		  writer3.write("\n");
+		  writer3.write(joueur4.getText());
 		  writer3.write("\n");
 		  writer3.close();
 	  }

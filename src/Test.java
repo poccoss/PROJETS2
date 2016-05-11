@@ -17,20 +17,12 @@ public class Test {
 		fenetrelos fen = new fenetrelos();
 	}
 	
-	public static void IAfacile() {
-		IAfacile fen = new IAfacile();
-	}
-	
 	public static void victoire(String nom, int h) {
 		Victoire fen = new Victoire(nom, h);
 	}
 	
 	public static void fenetre13sau() {
 		fenetre13sau fen = new fenetre13sau();
-	}
-	
-	public static void fenetre13saufa() {
-		IAfacilesau fen = new IAfacilesau();
 	}
 	
 	public static void explication() {

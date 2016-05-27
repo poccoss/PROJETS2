@@ -3,8 +3,8 @@
 # Pierre-Olivier CARLI
 # Louis JOURDAN
 
-Jeu à 2,3,4 joueurs
-Deux IAs (facile et difficile)
-option graphique
-sauvegarde
-deux types de grilles
+Jeu à 2,3,4 joueurs |
+Deux IAs (facile et difficile) |
+option graphique |
+sauvegarde |
+deux types de grilles |

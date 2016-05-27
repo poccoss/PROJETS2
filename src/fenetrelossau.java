@@ -16,8 +16,9 @@ import java.awt.Font;
 import java.io.*;
 
  
-public class fenetrelos extends JFrame implements ActionListener {
+public class fenetrelossau extends JFrame implements ActionListener {
 	
+	int exist=0;
 	JFrame choix = new JFrame();
 	String couleur1 = ""; //me permettra d'assurer de ne pas utiliser la couleur d'un autre joueur
 	String couleur2 = "";
@@ -53,13 +54,13 @@ public class fenetrelos extends JFrame implements ActionListener {
 	JCheckBox IAfacile3 = new JCheckBox("IA facile");
 	JButton jouer = new JButton("Jouer");
 	int ia1 = 1;
-	int IA1 = 0;
+	int IA1 = sauIA(1);
 	int ia2 = 1;
-	int IA2 = 0;
+	int IA2 = sauIA(1);
 	int ia3 = 1;
-	int IA3 = 0;
-	int joueur = 1;
-	int nbrejoueur = 2;
+	int IA3 = sauIA(1);
+	int joueur = joueur();
+	int nbrejoueur = nbrejoueur();
 	int[][] tableau = tableaujeu();
 	int[][] tableaujoueur = tableaujoueur();
 	
@@ -68,75 +69,9 @@ public class fenetrelos extends JFrame implements ActionListener {
 	JPanel panjoueur4 = new JPanel();
 	
 	
-	public void choix() {
-		choix.setTitle("JEU");
-		choix.setSize(300, 300);
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		choix.setLocationRelativeTo(null);
-		
-		choix2.setLayout(new BoxLayout(choix2, BoxLayout.PAGE_AXIS));
-		
-		panjoueur2.setLayout(new BoxLayout(panjoueur2, BoxLayout.X_AXIS));
-		panjoueur3.setLayout(new BoxLayout(panjoueur3, BoxLayout.X_AXIS));
-		panjoueur4.setLayout(new BoxLayout(panjoueur4, BoxLayout.X_AXIS));
-		
-		JPanel panjouer = new JPanel();
-		panjouer.setLayout(new BoxLayout(panjouer, BoxLayout.X_AXIS));
-		
-		/*
-		 * Sur chaque bouton, je fais la même chose
-		 * Je lui donne une ActionCommand, que je récupère ensuite dans la fonction actionPerformed
-		 * Cela me permet de savoir sur quel bouton j'ai cliqué
-		 * 
-		 * J'ajoute également un ActionListener qui permet à la fenêtre "d'écouter" si on clique sur le bouton
-		 */
-		
-		ajoutjoueur.setActionCommand("ajout");
-		ajoutjoueur.addActionListener(this);
-		ajoutjoueur4.setActionCommand("ajout4");
-		ajoutjoueur4.addActionListener(this);
-		explication.setActionCommand("explication");
-		explication.addActionListener(this);
-		IAdifficile1.setActionCommand("IAdifficile1");
-		IAdifficile1.addActionListener(this);
-		IAfacile1.setActionCommand("IAfacile1");
-		IAfacile1.addActionListener(this);
-		IAdifficile2.setActionCommand("IAdifficile2");
-		IAdifficile2.addActionListener(this);
-		IAfacile2.setActionCommand("IAfacile2");
-		IAfacile2.addActionListener(this);
-		IAdifficile3.setActionCommand("IAdifficile3");
-		IAdifficile3.addActionListener(this);
-		IAfacile3.setActionCommand("IAfacile3");
-		IAfacile3.addActionListener(this);
-		jouer.setActionCommand("jouer");
-		jouer.addActionListener(this);
-		
-		//on ajoute les boutons configurés au panel choix2
-		choix2.add(joueur1choix);
-		panjoueur2.add(joueur2choix);
-		panjoueur2.add(IAdifficile1);
-		panjoueur2.add(IAfacile1);
-		choix2.add(panjoueur2);
-		panjoueur3.add(joueur3choix);
-		panjoueur3.add(IAdifficile2);
-		panjoueur3.add(IAfacile2);
-		panjoueur3.add(ajoutjoueur);
-		choix2.add(panjoueur3);
-		panjoueur4.add(joueur4choix);
-		panjoueur4.add(IAdifficile3);
-		panjoueur4.add(IAfacile3);
-		panjoueur4.add(ajoutjoueur4);
-		choix2.add(panjoueur4);
-		panjouer.add(jouer);
-		choix2.add(panjouer);
-		
-		choix.getContentPane().add(choix2);
-		
-		choix.setVisible(true);
-	}
+
 	
-	public fenetrelos(){
+	public fenetrelossau(){
 	  this.setTitle("JEU");
 	  this.setSize(650, 650);
 	  //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -163,21 +98,29 @@ public class fenetrelos extends JFrame implements ActionListener {
 	  score1.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  score1.setForeground(Color.black);
 	  score1.setHorizontalAlignment(JLabel.CENTER);
+	  score1.setText(Integer.toString(compte(tableaujoueur, 1)));
 	  score2.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  score2.setForeground(Color.black);
 	  score2.setHorizontalAlignment(JLabel.CENTER);
+	  score2.setText(Integer.toString(compte(tableaujoueur, 2)));
 	  joueur3.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  joueur3.setForeground(Color.black);
 	  joueur3.setHorizontalAlignment(JLabel.CENTER);
 	  score3.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  score3.setForeground(Color.black);
 	  score3.setHorizontalAlignment(JLabel.CENTER);
+	  if (joueur3.getText()=="Joueur 3" || joueur3.getText().startsWith("IA")) {
+		  score3.setText(Integer.toString(compte(tableaujoueur, 3)));
+	  }
 	  joueur4.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  joueur4.setForeground(Color.black);
 	  joueur4.setHorizontalAlignment(JLabel.CENTER);
 	  score4.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  score4.setForeground(Color.black);
 	  score4.setHorizontalAlignment(JLabel.CENTER);
+	  if (joueur4.getText()=="Joueur 4" || joueur4.getText().startsWith("IA")) {
+		  score4.setText(Integer.toString(compte(tableaujoueur, 4)));
+	  }
 	  
 	  sauvegarde.setActionCommand("sauvegarde");
 	  sauvegarde.addActionListener(this);
@@ -200,7 +143,6 @@ public class fenetrelos extends JFrame implements ActionListener {
 	  this.getContentPane().add(scores, BorderLayout.EAST);
 	  
 	  this.setVisible(true);
-	  choix();
   }
   
   
@@ -367,10 +309,10 @@ public class fenetrelos extends JFrame implements ActionListener {
 		  }
 	  }
 	  //en fonction de l'existance ou non d'un joueur 3, on redessine avec 1 ou 3
-	  if (joueur3.getText()=="Joueur 3") {
+	  if (joueur3.getText().startsWith("IA") || joueur3.getText().startsWith("Joueur")) {
 			redessin(3);
 		}
-		else if (joueur3.getText()=="") {
+	  else {
 			redessin(1);
 		}
 	  
@@ -378,25 +320,24 @@ public class fenetrelos extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 2);
-	  if (compte>=157 && joueur3.getText()=="" && joueur4.getText()=="") {
+	  if (compte>=157 && nbrejoueur==2) {
 		  //this.dispose();
 		  redessin(2);
 		  Test.victoire(joueur2.getText(), compte);
 	  }
-	  else if (compte>=105 && joueur3.getText()!="" && joueur4.getText()=="") {
+	  else if (compte>=105 && nbrejoueur==3) {
 		  //this.dispose();
 		  redessin(2);
 		  Test.victoire(joueur2.getText(), compte);
 	  }
-	  else if (compte>=79 && joueur3.getText()!="" && joueur4.getText()!="") {
+	  else if (compte>=79 && nbrejoueur==4) {
 		  //this.dispose();
 		  redessin(2);
 		  Test.victoire(joueur2.getText(), compte);
 	  }
 	  score2.setText(Integer.toString(compte));
 	  
-	  //s'il y a un joueur 3, c'est à son tour
-	  if (joueur3.getText()!="") {
+	  if (joueur3.getText().startsWith("IA") || joueur3.getText().startsWith("Joueur")) {
 		  joueur = 3;
 		  if (couleur3=="blue") {
 			  nom.setForeground(Color.BLUE);
@@ -419,7 +360,7 @@ public class fenetrelos extends JFrame implements ActionListener {
 		  
 		  nom.setText("au tour du Joueur 3");
 		  
-		  if (joueur3.getText()!="Joueur 3") {
+		  if (joueur3.getText().startsWith("IA")) {
 			  int k = 0;
 			  if (IA2==1) {
 				  k = IAfacile(3);
@@ -431,9 +372,7 @@ public class fenetrelos extends JFrame implements ActionListener {
 			  joueur3(k);
 		  }
 	  }
-	  
-	  //sinon, c'est au joueur 1
-	  else if (joueur3.getText()=="") {
+	  else {
 		  joueur = 1;
 		  if (couleur1=="blue") {
 			  nom.setForeground(Color.BLUE);
@@ -494,10 +433,10 @@ public class fenetrelos extends JFrame implements ActionListener {
 	  }
 	  
 	  
-	  if (joueur4.getText()=="Joueur 4") {
+	  if (joueur4.getText().startsWith("IA") || joueur4.getText().startsWith("Joueur")) {
 			redessin(4);
 	  }
-	  else if (joueur4.getText()=="") {
+	  else {
 			redessin(1);
 	  }
 	  
@@ -506,24 +445,24 @@ public class fenetrelos extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 3);
-	  if (compte>=157 && joueur3.getText()=="" && joueur4.getText()=="") {
+	  if (compte>=157 && nbrejoueur==2) {
 		  //this.dispose();
 		  redessin(3);
 		  Test.victoire(joueur3.getText(), compte);
 	  }
-	  else if (compte>=105 && joueur3.getText()!="" && joueur4.getText()=="") {
+	  else if (compte>=105 && nbrejoueur==3) {
 		  //this.dispose();
 		  redessin(3);
 		  Test.victoire(joueur3.getText(), compte);
 	  }
-	  else if (compte>=79 && joueur3.getText()!="" && joueur4.getText()!="") {
+	  else if (compte>=79 && nbrejoueur==4) {
 		  //this.dispose();
 		  redessin(3);
 		  Test.victoire(joueur3.getText(), compte);
 	  }
 	  score3.setText(Integer.toString(compte));
 	  
-	  if (joueur4.getText()!="") {
+	  if (joueur4.getText().startsWith("IA") || joueur4.getText().startsWith("Joueur")) {
 		  joueur = 4;
 		  
 		  if (couleur4=="blue") {
@@ -547,20 +486,20 @@ public class fenetrelos extends JFrame implements ActionListener {
 		  
 		  nom.setText("au tour du Joueur 4");
 		  
-		  if (joueur4.getText()!="Joueur 4") {
+		  if (joueur4.getText().startsWith("IA")) {
 			  int k = 0;
 			  if (IA3==1) {
 				  k = IAfacile(4);
 			  }
 			  else {
-				  k = IAdifficile(4);  
+				  k = IAdifficile(4);
 			  }
-			  couleur4 = couleurs[k-1];
-			  joueur4(k);
+			  couleur3 = couleurs[k-1];
+			  joueur3(k);
 		  }
 	  }
 	  
-	  else if (joueur4.getText()=="") {
+	  else {
 		  joueur = 1;
 		  
 		  if (couleur1=="blue") {
@@ -965,68 +904,159 @@ public class fenetrelos extends JFrame implements ActionListener {
   }
   
   public int[][] tableaujeu() {
+	  //création du tableau 13x13 vide
 		int[][] tableaujeu = new int[25][25];
-		Random rand = new Random();
-		int k = 12;
-		int k2 = 1;
-		int q =1;
-		int q2=23;
-		for (int i = 0; i<25; i++) {
-			int j =0;
-			if (i<13) {
-				while (j<(k)) {
-					tableaujeu[i][j]=0;
-					j++;
+		try {
+			//ouverture du fichier pour permettre la lecture
+			InputStream ips=new FileInputStream("sauvegardes/partie13carredi/sauvegarde.txt"); 
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+			String chiffre;
+			int i = 0;
+			int j = 0;
+			//on ajoute chaque chiffre là où il faut (à la suite)
+			while((chiffre=br.readLine()) != null){
+				exist++;
+				int x = Integer.parseInt(chiffre);
+				tableaujeu[i][j]=x;
+				if (j==24) {
+					j=-1;
+					i++;
 				}
-				while (j<(k+q)) {
-					int f = rand.nextInt(6)+1;
-					tableaujeu[i][j]=f;
-					j++;
-				}
-				while (j<25) {
-					tableaujeu[i][j]=0;
-					j++;
-				}
-				q++;
-				q++;
-				k--;
+				j++;
 			}
-			else {
-				while (j<k2) {
-					tableaujeu[i][j]=0;
-					j++;
-				}
-				while (j<(k2+q2)) {
-					int f = rand.nextInt(6)+1;
-					tableaujeu[i][j]=f;
-					j++;
-				}
-				while (j<25) {
-					tableaujeu[i][j]=0;
-					j++;
-				}
-				q2--;
-				q2--;
-				k2++;
-			}
+			br.close();
+			
 		}
-		tableaujeu[0][12]=7;
-		tableaujeu[24][12]=7;
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+		
 		
 		return tableaujeu;
 	}
 	
-	public int[][] tableaujoueur() {
+  public int[][] tableaujoueur() {
 		int[][] tableaujoueur = new int[25][25];
-		for (int i = 0; i<25; i++) {
-			for (int j = 0; j<25; j++) {
-				tableaujoueur[i][j]=0;
+		
+		try {
+			InputStream ips=new FileInputStream("sauvegardes/partie13carredi/sauvegardejoueur.txt"); 
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+			String chiffre;
+			int i = 0;
+			int j = 0;
+			while((chiffre=br.readLine()) != null){
+				int x = Integer.parseInt(chiffre);
+				tableaujoueur[i][j]=x;
+				if (j==24) {
+					j=-1;
+					i++;
+				}
+				j++;
 			}
+			br.close();
+			
 		}
-		tableaujoueur[0][12]=1;
-		tableaujoueur[24][12]=2;
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
 		
 		return tableaujoueur;
+	}
+  
+  public int nbrejoueur() {
+		int recupjoueur = 0;
+		try {
+			InputStream ips=new FileInputStream("sauvegardes/partie13carredi/joueur.txt"); 
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+			String chiffre;
+			
+			chiffre=br.readLine();
+			chiffre=br.readLine();
+			int x = Integer.parseInt(chiffre);
+			recupjoueur=x;
+			
+			br.close();
+		}
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+		return recupjoueur;
+	}
+  
+  public int sauIA(int l) {
+		int sauIA=0;
+		try {
+			InputStream ips=new FileInputStream("sauvegardes/partie13carredi/joueur.txt"); 
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+			String chiffre="";
+			
+			for (int i=0; i<(l+5);i++){
+				chiffre=br.readLine();
+			}
+
+			int x = Integer.parseInt(chiffre);
+			sauIA=x;
+			
+			br.close();
+		}
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+		return sauIA;
+	}
+  
+  public int joueur() {
+		int joueur=1;
+		try {
+			InputStream ips=new FileInputStream("sauvegardes/partie13carredi/joueur.txt"); 
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+			String chiffre;
+			for (int i=0; i<8; i++) {
+				if (i==0) {
+					chiffre=br.readLine();
+					int x = Integer.parseInt(chiffre);
+					joueur=x;
+				}
+				if (i==1) {
+					chiffre=br.readLine();
+				}
+				if (i==2) {
+					chiffre=br.readLine();
+					joueur2.setText(chiffre);
+				}
+				if (i==3) {
+					chiffre=br.readLine();
+					joueur3.setText(chiffre);
+				}
+				if (i==4) {
+					chiffre=br.readLine();
+					joueur4.setText(chiffre);
+				}
+				if (i==5) {
+					chiffre=br.readLine();
+					IA1 = Integer.parseInt(chiffre);
+				}
+				if (i==6) {
+					chiffre=br.readLine();
+					IA2 = Integer.parseInt(chiffre);
+				}
+				if (i==7) {
+					chiffre=br.readLine();
+					IA3 = Integer.parseInt(chiffre);
+				}
+			}
+			br.close();
+		}
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+		
+		return joueur;
 	}
   
   public void redessin(int k) {
@@ -1115,9 +1145,9 @@ public class fenetrelos extends JFrame implements ActionListener {
   }
   
   public void sauvegarde() {
-	  String path = "sauvegardes/partie13carredi/sauvegarde.txt";
-	  String path2 = "sauvegardes/partie13carredi/sauvegardejoueur.txt";
-	  String path3 = "sauvegardes/partie13carredi/joueur.txt";
+	  String path = "sauvegardes/partie13carre/sauvegarde.txt";
+	  String path2 = "sauvegardes/partie13carre/sauvegardejoueur.txt";
+	  String path3 = "sauvegardes/partie13carre/joueur.txt";
 	  try {
 		  BufferedWriter writer = new BufferedWriter(new FileWriter(new File(path)));
 		  for (int i = 0; i<25; i++) {
@@ -1147,12 +1177,6 @@ public class fenetrelos extends JFrame implements ActionListener {
 		  writer3.write(joueur3.getText());
 		  writer3.write("\n");
 		  writer3.write(joueur4.getText());
-		  writer3.write("\n");
-		  writer3.write(Integer.toString(IA1));
-		  writer3.write("\n");
-		  writer3.write(Integer.toString(IA2));
-		  writer3.write("\n");
-		  writer3.write(Integer.toString(IA3));
 		  writer3.write("\n");
 		  writer3.close();
 	  }

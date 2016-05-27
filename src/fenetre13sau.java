@@ -56,10 +56,16 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	int[][] tableau = tableaujeu();
 	int[][] tableaujoueur = tableaujoueur();
 	
+	int ia1 = 1;
+	int IA1 = sauIA(1);
+	int ia2 = 1;
+	int IA2 = sauIA(2);
+	int ia3 = 1;
+	int IA3 = sauIA(3);
+	
 	
 	
 	public fenetre13sau(){
-		System.out.println(nbrejoueur);
 	  this.setTitle("JEU");
 	  this.setSize(650, 650);
 	  //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -231,7 +237,13 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  
 
 	  if (joueur2.getText().startsWith("IA")) {
-		  int k = IAdifficile(2);
+		  int k = 0;
+		  if (IA1==1) {
+			  k = IAfacile(2);
+		  }
+		  else {
+			  k = IAdifficile(2);
+		  }
 		  couleur2 = couleurs[k-1];
 		  joueur2(k);
 	  }
@@ -324,7 +336,13 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		  nom.setText("au tour du Joueur 3");
 		  
 		  if (joueur3.getText().startsWith("IA")) {
-			  int k = IAdifficile(3);
+			  int k = 0;
+			  if (IA2==1) {
+				  k = IAfacile(3);
+			  }
+			  else {
+				  k = IAdifficile(3);
+			  }
 			  couleur3 = couleurs[k-1];
 			  joueur3(k);
 		  }
@@ -444,9 +462,15 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		  nom.setText("au tour du Joueur 4");
 		  
 		  if (joueur4.getText().startsWith("IA")) {
-			  int k = IAdifficile(4);
-			  couleur4 = couleurs[k-1];
-			  joueur4(k);
+			  int k = 0;
+			  if (IA3==1) {
+				  k = IAfacile(4);
+			  }
+			  else {
+				  k = IAdifficile(4);
+			  }
+			  couleur3 = couleurs[k-1];
+			  joueur3(k);
 		  }
 	  }
 	  
@@ -826,6 +850,29 @@ public class fenetre13sau extends JFrame implements ActionListener {
 		}
 		return recupjoueur;
 	}
+	
+	public int sauIA(int l) {
+		int sauIA=0;
+		try {
+			InputStream ips=new FileInputStream("sauvegardes/partie13carredi/joueur.txt"); 
+			InputStreamReader ipsr=new InputStreamReader(ips);
+			BufferedReader br=new BufferedReader(ipsr);
+			String chiffre="";
+			
+			for (int i=0; i<(l+5);i++){
+				chiffre=br.readLine();
+			}
+
+			int x = Integer.parseInt(chiffre);
+			sauIA=x;
+			
+			br.close();
+		}
+		catch (Exception e){
+			System.out.println(e.toString());
+		}
+		return sauIA;
+	}
   
   public void redessin(int k) {
 	  tab.removeAll();
@@ -951,6 +998,95 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  catch (IOException ioe) {
 		  System.out.println(ioe.toString());
 	  }
+  }
+  
+  public int IAfacile(int c) {
+	  System.out.println("ok");
+	  //on répère les couleurs utilisées par les autres joeurs
+	  int h = 0;
+	  if (couleur1=="blue") {
+		  h=1;
+	  }
+	  else if (couleur1=="green") {
+		  h=2;
+	  }
+	  else if (couleur1=="yellow") {
+		  h=3;
+	  }
+	  else if (couleur1=="red") {
+		  h=4;
+	  }
+	  else if (couleur1=="magenta") {
+		  h=5;
+	  }
+	  else if (couleur1=="orange") {
+		  h=6;
+	  }
+	  int m = 0;
+	  if (couleur2=="blue") {
+		  m=1;
+	  }
+	  else if (couleur2=="green") {
+		  m=2;
+	  }
+	  else if (couleur2=="yellow") {
+		  m=3;
+	  }
+	  else if (couleur2=="red") {
+		  m=4;
+	  }
+	  else if (couleur2=="magenta") {
+		  m=5;
+	  }
+	  else if (couleur2=="orange") {
+		  m=6;
+	  }
+	  int p = 0;
+	  if (couleur3=="blue") {
+		  p=1;
+	  }
+	  else if (couleur3=="green") {
+		  p=2;
+	  }
+	  else if (couleur3=="yellow") {
+		  p=3;
+	  }
+	  else if (couleur3=="red") {
+		  p=4;
+	  }
+	  else if (couleur3=="magenta") {
+		  p=5;
+	  }
+	  else if (couleur3=="orange") {
+		  p=6;
+	  }
+	  int u = 0;
+	  if (couleur4=="blue") {
+		  u=1;
+	  }
+	  else if (couleur4=="green") {
+		  u=2;
+	  }
+	  else if (couleur4=="yellow") {
+		  u=3;
+	  }
+	  else if (couleur4=="red") {
+		  u=4;
+	  }
+	  else if (couleur4=="magenta") {
+		  u=5;
+	  }
+	  else if (couleur4=="orange") {
+		  u=6;
+	  }
+	  //utilisation d'un chiffre random pour choisir la prochaine couleur jouée
+	  Random rand = new Random();
+	  int k = h;
+	  //on cherche un chiffre tant que le chiffre trouvé est celui d'un autre joueur
+	  while (k==h) {
+		  k = rand.nextInt(6)+1;
+	  }
+	  return k;
   }
   
   public int IAdifficile(int c) {

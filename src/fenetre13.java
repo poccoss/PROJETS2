@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.io.*;
+import javax.swing.JCheckBox;
 
 //utilisation d'un exteends JFrame pour permettre la création de fenêtre en swing
 //implémentation d'ActionListener qui permettra d'utiliser les boutons
@@ -50,23 +51,44 @@ public class fenetre13 extends JFrame implements ActionListener {
 	JButton ajoutjoueur = new JButton("ajouter un joueur 3"); //boutons permettant l'ajout de joueurs
 	JButton ajoutjoueur4 = new JButton("ajouter un joueur 4");
 	JButton explication = new JButton("explications");
-	JButton IAdifficile1 = new JButton("le joueur 2 est une AI");
-	JButton IAdifficile2 = new JButton("ajouter une AI");
-	JButton IAdifficile3 = new JButton("ajouter une AI");
+	JCheckBox IAdifficile1 = new JCheckBox("IA difficile");
+	JCheckBox IAfacile1 = new JCheckBox("IA facile");
+	JCheckBox IAdifficile2 = new JCheckBox("IA difficile");
+	JCheckBox IAfacile2 = new JCheckBox("IA facile");
+	JCheckBox IAdifficile3 = new JCheckBox("IA difficile");
+	JCheckBox IAfacile3 = new JCheckBox("IA facile");
 	JButton jouer = new JButton("Jouer");
+	int ia1 = 1;
+	int IA1 = 0;
+	int ia2 = 1;
+	int IA2 = 0;
+	int ia3 = 1;
+	int IA3 = 0;
 	int joueur = 1;
 	int nbrejoueur = 2;
 	int[][] tableau = tableaujeu();
 	int[][] tableaujoueur = tableaujoueur();
 	
+	JPanel panjoueur2 = new JPanel();
+	JPanel panjoueur3 = new JPanel();
+	JPanel panjoueur4 = new JPanel();
+	
 	
 	public void choix() {
 		choix.setTitle("Options");
-		choix.setSize(300, 300);
+		choix.setSize(400, 300);
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		choix.setLocationRelativeTo(null);
 		
-		choix2.setLayout(new BoxLayout(choix2, BoxLayout.PAGE_AXIS));
+		choix2.setLayout(new BoxLayout(choix2, BoxLayout.Y_AXIS));
+		
+
+		panjoueur2.setLayout(new BoxLayout(panjoueur2, BoxLayout.X_AXIS));
+		panjoueur3.setLayout(new BoxLayout(panjoueur3, BoxLayout.X_AXIS));
+		panjoueur4.setLayout(new BoxLayout(panjoueur4, BoxLayout.X_AXIS));
+		
+		JPanel panjouer = new JPanel();
+		panjouer.setLayout(new BoxLayout(panjouer, BoxLayout.X_AXIS));
 		
 		/*
 		 * Sur chaque bouton, je fais la même chose
@@ -84,24 +106,37 @@ public class fenetre13 extends JFrame implements ActionListener {
 		explication.addActionListener(this);
 		IAdifficile1.setActionCommand("IAdifficile1");
 		IAdifficile1.addActionListener(this);
+		IAfacile1.setActionCommand("IAfacile1");
+		IAfacile1.addActionListener(this);
 		IAdifficile2.setActionCommand("IAdifficile2");
 		IAdifficile2.addActionListener(this);
+		IAfacile2.setActionCommand("IAfacile2");
+		IAfacile2.addActionListener(this);
 		IAdifficile3.setActionCommand("IAdifficile3");
 		IAdifficile3.addActionListener(this);
+		IAfacile3.setActionCommand("IAfacile3");
+		IAfacile3.addActionListener(this);
 		jouer.setActionCommand("jouer");
 		jouer.addActionListener(this);
 		
 		//on ajoute les boutons configurés au panel choix2
 		choix2.add(joueur1choix);
-		choix2.add(joueur2choix);
-		choix2.add(IAdifficile1);
-		choix2.add(joueur3choix);
-		choix2.add(joueur4choix);
-		choix2.add(ajoutjoueur);
-		choix2.add(IAdifficile2);
-		choix2.add(ajoutjoueur4);
-		choix2.add(IAdifficile3);
-		choix2.add(jouer);
+		panjoueur2.add(joueur2choix);
+		panjoueur2.add(IAdifficile1);
+		panjoueur2.add(IAfacile1);
+		choix2.add(panjoueur2);
+		panjoueur3.add(joueur3choix);
+		panjoueur3.add(IAdifficile2);
+		panjoueur3.add(IAfacile2);
+		panjoueur3.add(ajoutjoueur);
+		choix2.add(panjoueur3);
+		panjoueur4.add(joueur4choix);
+		panjoueur4.add(IAdifficile3);
+		panjoueur4.add(IAfacile3);
+		panjoueur4.add(ajoutjoueur4);
+		choix2.add(panjoueur4);
+		panjouer.add(jouer);
+		choix2.add(panjouer);
 		
 		//on ajoute choix2 comme panel de la fenêtre choix
 		choix.getContentPane().add(choix2);
@@ -318,7 +353,13 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  
 	  //si le joueur2 est une IA, on utilise la fonction avant de lancer le processus
 	  if (joueur2.getText()!="Joueur 2") {
-		  int k = IAdifficile(2);
+		  int k = 0;
+		  if (IA1==1) {
+			  k = IAfacile(2);
+		  }
+		  else {
+			  k = IAdifficile(2);
+		  }
 		  couleur2 = couleurs[k-1];
 		  joueur2(k);
 	  }
@@ -412,7 +453,13 @@ public class fenetre13 extends JFrame implements ActionListener {
 		  nom.setText("au tour du Joueur 3");
 		  
 		  if (joueur3.getText()!="Joueur 3") {
-			  int k = IAdifficile(3);
+			  int k = 0;
+			  if (IA2==1) {
+				  k = IAfacile(3);
+			  }
+			  else {
+				  k = IAdifficile(3);
+			  }
 			  couleur3 = couleurs[k-1];
 			  joueur3(k);
 		  }
@@ -534,7 +581,13 @@ public class fenetre13 extends JFrame implements ActionListener {
 		  nom.setText("au tour du Joueur 4");
 		  
 		  if (joueur4.getText()!="Joueur 4") {
-			  int k = IAdifficile(4);
+			  int k = 0;
+			  if (IA3==1) {
+				  k = IAfacile(4);
+			  }
+			  else {
+				  k = IAdifficile(4);  
+			  }
 			  couleur4 = couleurs[k-1];
 			  joueur4(k);
 		  }
@@ -785,44 +838,137 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  //si le joueur2 devient une AI
 	  if (action.getActionCommand()=="IAdifficile1") {
 		  //on modifie son nom
-		  joueur2.setText("IA 1");
-		  joueur2choix.setText("IA 1");
-	  }
-	  //idem pour joueur3 et 4
-	  if (action.getActionCommand()=="IAdifficile2") {
-		  nbrejoueur++;
-		  ajoutjoueur3();
-		  if (joueur2.getText()=="IA 1") {
-			  joueur3.setText("IA 2");
-			  joueur3choix.setText("IA 2");
-		  }
-		  else {
-			  joueur3.setText("IA 1");
-			  joueur3choix.setText("IA 1");
-		  }
-	  }
-	  if (action.getActionCommand()=="IAdifficile3") {
-		  nbrejoueur++;
-		  ajoutjoueur4();
-		  if (joueur2.getText()=="IA") {
+		  if (ia1==1) {
 			  joueur2.setText("IA 1");
 			  joueur2choix.setText("IA 1");
-			  joueur4.setText("IA 2");
-			  joueur4choix.setText("IA 2");
-		  }
-		  else if (joueur2.getText()=="IA 1") {
-			  joueur4.setText("IA 3");
-			  joueur4choix.setText("IA 3");
-		  }
-		  else if (joueur3.getText()=="IA 1") {
-			  joueur4.setText("IA 2");
-			  joueur4choix.setText("IA 2");
+			  ia1=2;
+			  IA1=2;
 		  }
 		  else {
-			  joueur4.setText("IA 1");
-			  joueur4choix.setText("IA 1");
+			  joueur2.setText("Joueur 2");
+			  joueur2choix.setText("Joueur 2");
+			  ia1=1;
+			  IA1=0;
 		  }
 	  }
+	  if (action.getActionCommand()=="IAfacile1") {
+		  //on modifie son nom
+		  if (ia1==1) {
+			  joueur2.setText("IA 1");
+			  joueur2choix.setText("IA 1");
+			  ia1=2;
+			  IA1=1;
+		  }
+		  else {
+			  joueur2.setText("Joueur 2");
+			  joueur2choix.setText("Joueur 2");
+			  ia1=1;
+			  IA1=0;
+		  }
+	  }
+	  //idem pour joueur3 et 4
+	  if (action.getActionCommand()=="IAdifficile2" && nbrejoueur>=3) {
+		  if (ia2==1) {
+			  if (joueur2.getText()=="IA 1") {
+				  joueur3.setText("IA 2");
+				  joueur3choix.setText("IA 2");
+			  }
+			  else {
+				  joueur3.setText("IA 1");
+				  joueur3choix.setText("IA 1");
+			  }
+			  ia2=2;
+			  IA2=2;
+		  }
+		  else {
+			  joueur3.setText("Joueur 3");
+			  joueur3choix.setText("Joueur 3");
+			  ia2=1;
+			  IA2=0;
+		  }
+	  }
+	  if (action.getActionCommand()=="IAfacile2" && nbrejoueur>=3) {
+		  if (ia2==1) {
+			  if (joueur2.getText()=="IA 1") {
+				  joueur3.setText("IA 2");
+				  joueur3choix.setText("IA 2");
+			  }
+			  else {
+				  joueur3.setText("IA 1");
+				  joueur3choix.setText("IA 1");
+			  }
+			  ia2=2;
+			  IA2=1;
+		  }
+		  else {
+			  joueur3.setText("Joueur 3");
+			  joueur3choix.setText("Joueur 3");
+			  ia2=1;
+			  IA2=0;
+		  }
+	  }
+	  
+	  if (action.getActionCommand()=="IAdifficile3" && nbrejoueur>=4) {
+		  if (ia3==1) {
+			  if (joueur2.getText()=="IA") {
+				  joueur2.setText("IA 1");
+				  joueur2choix.setText("IA 1");
+				  joueur4.setText("IA 2");
+				  joueur4choix.setText("IA 2");
+			  }
+			  else if (joueur2.getText()=="IA 1") {
+				  joueur4.setText("IA 3");
+				  joueur4choix.setText("IA 3");
+			  }
+			  else if (joueur3.getText()=="IA 1") {
+				  joueur4.setText("IA 2");
+				  joueur4choix.setText("IA 2");
+			  }
+			  else {
+				  joueur4.setText("IA 1");
+				  joueur4choix.setText("IA 1");
+			  }
+			  ia3=2;
+			  IA3=2;
+		  }
+		  else {
+			  joueur4.setText("Joueur 4");
+			  joueur4choix.setText("Joueur 4");
+			  ia3=1;
+			  IA3=0;
+		  }
+	  }
+	  if (action.getActionCommand()=="IAfacile3" && nbrejoueur>=4) {
+		  if (ia3==1) {
+			  if (joueur2.getText()=="IA") {
+				  joueur2.setText("IA 1");
+				  joueur2choix.setText("IA 1");
+				  joueur4.setText("IA 2");
+				  joueur4choix.setText("IA 2");
+			  }
+			  else if (joueur2.getText()=="IA 1") {
+				  joueur4.setText("IA 3");
+				  joueur4choix.setText("IA 3");
+			  }
+			  else if (joueur3.getText()=="IA 1") {
+				  joueur4.setText("IA 2");
+				  joueur4choix.setText("IA 2");
+			  }
+			  else {
+				  joueur4.setText("IA 1");
+				  joueur4choix.setText("IA 1");
+			  }
+			  ia3=2;
+			  IA3=1;
+		  }
+		  else {
+			  joueur4.setText("Joueur 4");
+			  joueur4choix.setText("Joueur 4");
+			  ia3=1;
+			  IA3=0;
+		  }
+	  }
+	  
 	  //si on clique sur jouer, ça ferme la fenêtre de choix d'actions
 	  if (action.getActionCommand()=="jouer") {
 		  choix.dispose();
@@ -836,6 +982,7 @@ public class fenetre13 extends JFrame implements ActionListener {
   //pour ajouter un joueur 3
   public void ajoutjoueur3() {
 	  //modification de son nom
+	  panjoueur3.remove(ajoutjoueur);
 	  joueur3.setText("Joueur 3");
 	  joueur3choix.setText("Joueur 3");
 	  //modification de son score
@@ -845,10 +992,12 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  //modification du tableau jeu (change la couleur là où il commence
 	  tableau[0][12]=7;
 	  //on redessine le tableau
+	  choix.remove(ajoutjoueur);
 	  redessin(1);
   }
   //idem pour ajouter le joueur 4
   public void ajoutjoueur4() {
+	  panjoueur4.remove(ajoutjoueur4);
 	  joueur4.setText("Joueur 4");
 	  joueur4choix.setText("Joueur 4");
 	  score4.setText("1");
@@ -1035,6 +1184,12 @@ public class fenetre13 extends JFrame implements ActionListener {
 		  writer3.write(joueur3.getText());
 		  writer3.write("\n");
 		  writer3.write(joueur4.getText());
+		  writer3.write("\n");
+		  writer3.write(Integer.toString(IA1));
+		  writer3.write("\n");
+		  writer3.write(Integer.toString(IA2));
+		  writer3.write("\n");
+		  writer3.write(Integer.toString(IA3));
 		  writer3.write("\n");
 		  writer3.close();
 	  }

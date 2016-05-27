@@ -17,6 +17,10 @@ public class Test {
 		fenetrelos fen = new fenetrelos();
 	}
 	
+	public static void jeulosau() {
+		fenetrelossau fen = new fenetrelossau();
+	}
+	
 	public static void victoire(String nom, int h) {
 		Victoire fen = new Victoire(nom, h);
 	}

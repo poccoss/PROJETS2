@@ -117,13 +117,12 @@ public class fenetre13 extends JFrame implements ActionListener {
 		 * 
 		 * J'ajoute également un ActionListener qui permet à la fenêtre "d'écouter" si on clique sur le bouton
 		 */
-		
-		box.addItem("13x13");
-		box.addItem("14x14");
-		box.addItem("15x15");
-		box.addItem("16x16");
-		box.addItem("17x17");
-		box.addItem("18x18");
+		int x = 5;
+		for (int i=4; i<50; i++) {
+			box.addItem(Integer.toString(x));
+			x++;
+		}
+		box.setSelectedIndex(8);
 		box.addItemListener(new ItemState());
 		box.setPreferredSize(new Dimension(20,20));
 		
@@ -993,24 +992,7 @@ public class fenetre13 extends JFrame implements ActionListener {
   
   class ItemState implements ItemListener {
 	  public void itemStateChanged(ItemEvent e) {
-	      if (e.getItem()=="13x13") {
-	    	  taille=13;
-	      }
-	      else if (e.getItem()=="14x14") {
-	    	  taille=14;
-	      }
-	      else if (e.getItem()=="15x15") {
-	    	  taille=15;
-	      }
-	      else if (e.getItem()=="16x16") {
-	    	  taille=16;
-	      }
-	      else if (e.getItem()=="17x17") {
-	    	  taille=17;
-	      }
-	      else if (e.getItem()=="18x18") {
-	    	  taille=18;
-	      }
+		  taille=Integer.parseInt(e.getItem().toString());
 	      changement();
 	    } 
   }

@@ -154,18 +154,18 @@ public class fenetre13sau extends JFrame implements ActionListener {
   
   public void victoire(int h, int c, String joueur) {
 		//en fonction du nombre de joueurs, le score nécessaire à la victoire n'est pas le même
-		  if (c>=((taille*taille)/2) && joueur3.getText()=="" && joueur4.getText()=="") {
+		  if (c>=((taille*taille)/2) && nbrejoueur==2) {
 			  //this.dispose();
 			  //si le joueur a gagné, une nouvelle fenêtre s'ouvre pour le lui dire
 			  Test.victoire("Le "+ joueur , c);
 			  redessin(h);
 		  }
-		  else if (c>=((taille*taille)/3) && joueur3.getText()!="" && joueur4.getText()=="") {
+		  else if (c>=((taille*taille)/3) && nbrejoueur==3) {
 			  //this.dispose();
 			  Test.victoire("Le "+joueur, c);
 			  redessin(h);
 		  }
-		  else if (c>=((taille*taille)/4) && joueur3.getText()!="" && joueur4.getText()!="") {
+		  else if (c>=((taille*taille)/4) && nbrejoueur==4) {
 			  //this.dispose();
 			  Test.victoire("Le "+joueur, c);
 			  redessin(h);

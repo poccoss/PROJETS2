@@ -33,7 +33,7 @@ public class Fenetre extends JFrame implements ActionListener {
 	  JPanel partie13 = new JPanel();
 	  //Idem pour cette ligne
 	  partie13.setLayout(new BoxLayout(partie13, BoxLayout.LINE_AXIS));
-	  JButton jouer13 = new JButton("partie rapide (13x13)");
+	  JButton jouer13 = new JButton("Grille carrée (taille variable)");
 	  jouer13.setBackground(Color.RED);
 	  jouer13.setFont(new Font("Tahoma", Font.BOLD, 30));
 	  jouer13.addActionListener(this);
@@ -53,7 +53,7 @@ public class Fenetre extends JFrame implements ActionListener {
 	  JPanel partielo = new JPanel();
 	  //Idem pour cette ligne
 	  partielo.setLayout(new BoxLayout(partielo, BoxLayout.LINE_AXIS));
-	  JButton jouerlo = new JButton("partie rapide (losange)");
+	  JButton jouerlo = new JButton("Grille losange");
 	  jouerlo.setBackground(Color.yellow);
 	  jouerlo.addActionListener(this);
 	  jouerlo.setFont(new Font("Tahoma", Font.BOLD, 30));

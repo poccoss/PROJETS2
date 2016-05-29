@@ -1,4 +1,6 @@
-import java.awt.GridLayout; 
+import java.awt.GridLayout;
+import java.awt.Dimension;
+import javax.swing.JTextField; 
 import java.util.Random;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -14,6 +16,9 @@ import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.io.*;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 //utilisation d'un exteends JFrame pour permettre la création de fenêtre en swing
 //implémentation d'ActionListener qui permettra d'utiliser les boutons
@@ -66,19 +71,33 @@ public class fenetre13 extends JFrame implements ActionListener {
 	int IA3 = 0;
 	int joueur = 1;
 	int nbrejoueur = 2;
-	int[][] tableau = tableaujeu();
-	int[][] tableaujoueur = tableaujoueur();
+	int taille = 13;
+	int[][] tableau;
+	int[][] tableaujoueur;
 	
 	JPanel panjoueur2 = new JPanel();
 	JPanel panjoueur3 = new JPanel();
 	JPanel panjoueur4 = new JPanel();
+	JPanel pantaille = new JPanel();
 	
+	Boolean joue=false;
+	
+	JComboBox box = new JComboBox();
+	
+	
+	public int application() {
+		choix.dispose();
+		changement();
+		return(1);
+	}
 	
 	public void choix() {
 		choix.setTitle("Options");
 		choix.setSize(400, 300);
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(application());
 		choix.setLocationRelativeTo(null);
+		
+		choix.setLayout(new BorderLayout());
 		
 		choix2.setLayout(new BoxLayout(choix2, BoxLayout.Y_AXIS));
 		
@@ -86,6 +105,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 		panjoueur2.setLayout(new BoxLayout(panjoueur2, BoxLayout.X_AXIS));
 		panjoueur3.setLayout(new BoxLayout(panjoueur3, BoxLayout.X_AXIS));
 		panjoueur4.setLayout(new BoxLayout(panjoueur4, BoxLayout.X_AXIS));
+		pantaille.setLayout(new BoxLayout(pantaille, BoxLayout.X_AXIS));
 		
 		JPanel panjouer = new JPanel();
 		panjouer.setLayout(new BoxLayout(panjouer, BoxLayout.X_AXIS));
@@ -97,6 +117,15 @@ public class fenetre13 extends JFrame implements ActionListener {
 		 * 
 		 * J'ajoute également un ActionListener qui permet à la fenêtre "d'écouter" si on clique sur le bouton
 		 */
+		
+		box.addItem("13x13");
+		box.addItem("14x14");
+		box.addItem("15x15");
+		box.addItem("16x16");
+		box.addItem("17x17");
+		box.addItem("18x18");
+		box.addItemListener(new ItemState());
+		box.setPreferredSize(new Dimension(20,20));
 		
 		ajoutjoueur.setActionCommand("ajout");
 		ajoutjoueur.addActionListener(this);
@@ -119,27 +148,36 @@ public class fenetre13 extends JFrame implements ActionListener {
 		jouer.setActionCommand("jouer");
 		jouer.addActionListener(this);
 		
+		
 		//on ajoute les boutons configurés au panel choix2
+		choix2.add(new JLabel("\n"));
 		choix2.add(joueur1choix);
+		choix2.add(new JLabel("\n"));
 		panjoueur2.add(joueur2choix);
 		panjoueur2.add(IAdifficile1);
 		panjoueur2.add(IAfacile1);
 		choix2.add(panjoueur2);
+		choix2.add(new JLabel("\n"));
 		panjoueur3.add(joueur3choix);
 		panjoueur3.add(IAdifficile2);
 		panjoueur3.add(IAfacile2);
 		panjoueur3.add(ajoutjoueur);
 		choix2.add(panjoueur3);
+		choix2.add(new JLabel("\n"));
 		panjoueur4.add(joueur4choix);
 		panjoueur4.add(IAdifficile3);
 		panjoueur4.add(IAfacile3);
 		panjoueur4.add(ajoutjoueur4);
 		choix2.add(panjoueur4);
+		choix2.add(new JLabel("\n"));
+		pantaille.add(new JLabel("largeur de la grille :"));
+		pantaille.add(box);
 		panjouer.add(jouer);
 		choix2.add(panjouer);
 		
 		//on ajoute choix2 comme panel de la fenêtre choix
-		choix.getContentPane().add(choix2);
+		choix.getContentPane().add(pantaille, BorderLayout.NORTH);
+		choix.getContentPane().add(choix2, BorderLayout.CENTER);
 		
 		choix.setVisible(true);
 	}
@@ -165,9 +203,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  nom.setHorizontalAlignment(JLabel.CENTER);
 	  
 	  //le panel qui sera au CENTER de la fenêtre a un layout manager qui permet d'afficher un tableau
-	  tab.setLayout(new GridLayout(13, 13));
 	  //appel de la fonction redessin(i), qui permet d'afficher le tableau avec les couleurs
-	  redessin(1);
 	  
 	  joueur1.setFont(new Font("Tahoma", Font.BOLD, 25));
 	  joueur1.setForeground(Color.black);
@@ -196,7 +232,6 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  
 	  sauvegarde.setActionCommand("sauvegarde");
 	  sauvegarde.addActionListener(this);
-	  
 	  //la partie EAST de la fenêtre regroupe les scores et noms des joueurs, que j'ajoute avec les lignes suivantes
 	  scores.setLayout(new BoxLayout(scores, BoxLayout.PAGE_AXIS));
 	  scores.add(joueur1);
@@ -233,14 +268,34 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  //cette fonction prend en argument le numéro du joueur et le tableau de ses cases.
 	  //La fonction compte ses points et les renvoie
 	  int somme = 0;
-	  for (int i = 0; i<13; i++) {
-			for (int j = 0; j<13; j++) {
+	  for (int i = 0; i<taille; i++) {
+			for (int j = 0; j<taille; j++) {
 				if (tableau2[i][j]==k) {
 					somme++;
 				}
 			}
 		}
 	  return somme;
+  }
+  
+  public void victoire(int h, int c, String joueur) {
+	//en fonction du nombre de joueurs, le score nécessaire à la victoire n'est pas le même
+	  if (c>=((taille*taille)/2) && joueur3.getText()=="" && joueur4.getText()=="") {
+		  //this.dispose();
+		  //si le joueur a gagné, une nouvelle fenêtre s'ouvre pour le lui dire
+		  Test.victoire("Le "+ joueur , c);
+		  redessin(h);
+	  }
+	  else if (c>=((taille*taille)/3) && joueur3.getText()!="" && joueur4.getText()=="") {
+		  //this.dispose();
+		  Test.victoire("Le "+joueur, c);
+		  redessin(h);
+	  }
+	  else if (c>=((taille*taille)/4) && joueur3.getText()!="" && joueur4.getText()!="") {
+		  //this.dispose();
+		  Test.victoire("Le "+joueur, c);
+		  redessin(h);
+	  }
   }
   
   
@@ -253,15 +308,15 @@ public class fenetre13 extends JFrame implements ActionListener {
   
   public void joueur1(int h) {
 	  //lorsque le premier joueur joue, on s'assure de fermer la fenêtre permettant d'ajouter des joueurs
-	  choix.dispose();
+
 	  /*
 	   * parcourt des des tableaux
 	   * si la case appartient au joueur, celle-ci prend la couleur selectionnée
 	   * ensuite, si le case a la même couleur mais n'appartient pas au joueur, on regarde si elle touche le territoire du joueur
 	   * si c'est le cas, on l'attribue au joueur
 	   */
-	  for (int i = 0; i<13; i++) {
-			for (int j = 0; j<13; j++) {
+	  for (int i = 0; i<taille; i++) {
+			for (int j = 0; j<taille; j++) {
 				if (tableaujoueur[i][j]==1) {
 					tableau[i][j]=h;
 				}
@@ -277,8 +332,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 	   * cela permet de ne pas rater une case car sa voisine n'appartiendra au joueur qu'à l'étape suivante
 	   */
 	  for (int l = 0; l<10; l++) {
-		  for (int i = 12; i>=0; i--) {
-			  for (int j = 12; j>=0; j--) {
+		  for (int i = (taille-1); i>=0; i--) {
+			  for (int j = (taille-1); j>=0; j--) {
 				  if (tableau[i][j]==h && tableaujoueur[i][j]!=1) {
 						if (((i-1)>=0 && tableaujoueur[i-1][j]==1) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==1) || ((j-1)>=0 && tableaujoueur[i][j-1]==1) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==1)) {
 							tableaujoueur[i][j]=1;
@@ -286,8 +341,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 				  }
 			  }
 		  }
-		  for (int i = 0; i<13; i++) {
-				for (int j = 0; j<13; j++) {
+		  for (int i = 0; i<taille; i++) {
+				for (int j = 0; j<taille; j++) {
 					if (tableau[i][j]==h && tableaujoueur[i][j]!=1) {
 						if (((i-1)>=0 && tableaujoueur[i-1][j]==1) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==1) || ((j-1)>=0 && tableaujoueur[i][j-1]==1) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==1)) {
 							tableaujoueur[i][j]=1;
@@ -305,23 +360,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  
 	  //calcul du score du joueur
 	  int compte = compte(tableaujoueur, 1);
-	  //en fonction du nombre de joueurs, le score nécessaire à la victoire n'est pas le même
-	  if (compte>=85 && joueur3.getText()=="" && joueur4.getText()=="") {
-		  //this.dispose();
-		  //si le joueur a gagné, une nouvelle fenêtre s'ouvre pour le lui dire
-		  Test.victoire("Le joueur 1", compte);
-		  redessin(1);
-	  }
-	  else if (compte>=57 && joueur3.getText()!="" && joueur4.getText()=="") {
-		  //this.dispose();
-		  Test.victoire("Le joueur 1", compte);
-		  redessin(1);
-	  }
-	  else if (compte>=43 && joueur3.getText()!="" && joueur4.getText()!="") {
-		  //this.dispose();
-		  Test.victoire("Le joueur 1", compte);
-		  redessin(1);
-	  }
+	  victoire(1, compte, joueur1.getText());
 	  //modification du JLabel pour mettre à jour le score et le montrer aux joueurs
 	  score1.setText(Integer.toString(compte));
 	  
@@ -366,8 +405,8 @@ public class fenetre13 extends JFrame implements ActionListener {
   }
   
   public void joueur2(int h) {
-	  for (int i = 12; i>=0; i--) {
-			for (int j = 12; j>=0; j--) {
+	  for (int i = (taille-1); i>=0; i--) {
+			for (int j = (taille-1); j>=0; j--) {
 				if (tableaujoueur[i][j]==2) {
 					tableau[i][j]=h;
 				}
@@ -380,8 +419,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 		}
 	  
 	  for (int l = 0; l<10; l++) {
-		  for (int i = 0; i<13; i++) {
-				for (int j = 0; j<13; j++) {
+		  for (int i = 0; i<taille; i++) {
+				for (int j = 0; j<taille; j++) {
 					if (tableau[i][j]==h && tableaujoueur[i][j]!=2) {
 						if (((i-1)>=0 && tableaujoueur[i-1][j]==2) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==2) || ((j-1)>=0 && tableaujoueur[i][j-1]==2) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==2)) {
 							tableaujoueur[i][j]=2;
@@ -389,8 +428,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 					}
 				}
 		  }
-		  for (int i = 12; i>=0; i--) {
-			  for (int j = 12; j>=0; j--) {
+		  for (int i = (taille-1); i>=0; i--) {
+			  for (int j = (taille-1); j>=0; j--) {
 				  if (tableau[i][j]==h && tableaujoueur[i][j]!=2) {
 						if (((i-1)>=0 && tableaujoueur[i-1][j]==2) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==2) || ((j-1)>=0 && tableaujoueur[i][j-1]==2) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==2)) {
 							tableaujoueur[i][j]=2;
@@ -411,21 +450,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 2);
-	  if (compte>=85 && joueur3.getText()=="" && joueur4.getText()=="") {
-		  //this.dispose();
-		  redessin(2);
-		  Test.victoire(joueur2.getText(), compte);
-	  }
-	  else if (compte>=57 && joueur3.getText()!="" && joueur4.getText()=="") {
-		  //this.dispose();
-		  redessin(2);
-		  Test.victoire(joueur2.getText(), compte);
-	  }
-	  else if (compte>=43 && joueur3.getText()!="" && joueur4.getText()!="") {
-		  //this.dispose();
-		  redessin(2);
-		  Test.victoire(joueur2.getText(), compte);
-	  }
+	  victoire(2, compte, joueur2.getText());
 	  score2.setText(Integer.toString(compte));
 	  
 	  //s'il y a un joueur 3, c'est à son tour
@@ -492,8 +517,8 @@ public class fenetre13 extends JFrame implements ActionListener {
   }
   
   public void joueur3(int h) {
-	  for (int i = 12; i>=0; i--) {
-			for (int j = 12; j>=0; j--) {
+	  for (int i = (taille-1); i>=0; i--) {
+			for (int j = (taille-1); j>=0; j--) {
 				if (tableaujoueur[i][j]==3) {
 					tableau[i][j]=h;
 				}
@@ -506,8 +531,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 		}
 	  
 	  for (int l = 0; l<10; l++) {
-		  for (int i = 0; i<13; i++) {
-				for (int j = 0; j<13; j++) {
+		  for (int i = 0; i<taille; i++) {
+				for (int j = 0; j<taille; j++) {
 					if (tableau[i][j]==h && tableaujoueur[i][j]!=3) {
 						if (((i-1)>=0 && tableaujoueur[i-1][j]==3) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==3) || ((j-1)>=0 && tableaujoueur[i][j-1]==3) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==3)) {
 							tableaujoueur[i][j]=3;
@@ -515,8 +540,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 					}
 				}
 		  }
-		  for (int i = 12; i>=0; i--) {
-			  for (int j = 12; j>=0; j--) {
+		  for (int i = (taille-1); i>=0; i--) {
+			  for (int j = (taille-1); j>=0; j--) {
 				  if (tableau[i][j]==h && tableaujoueur[i][j]!=3) {
 						if (((i-1)>=0 && tableaujoueur[i-1][j]==3) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==3) || ((j-1)>=0 && tableaujoueur[i][j-1]==3) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==3)) {
 							tableaujoueur[i][j]=3;
@@ -539,21 +564,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 3);
-	  if (compte>=85 && joueur3.getText()=="" && joueur4.getText()=="") {
-		  //this.dispose();
-		  redessin(3);
-		  Test.victoire(joueur3.getText(), compte);
-	  }
-	  else if (compte>=57 && joueur3.getText()!="" && joueur4.getText()=="") {
-		  //this.dispose();
-		  redessin(3);
-		  Test.victoire(joueur3.getText(), compte);
-	  }
-	  else if (compte>=43 && joueur3.getText()!="" && joueur4.getText()!="") {
-		  //this.dispose();
-		  redessin(3);
-		  Test.victoire(joueur3.getText(), compte);
-	  }
+	  victoire(3, compte, joueur3.getText());
 	  score3.setText(Integer.toString(compte));
 	  
 	  if (joueur4.getText()!="") {
@@ -621,8 +632,8 @@ public class fenetre13 extends JFrame implements ActionListener {
   
   public void joueur4(int h) {
 
-	  for (int i = 0; i<13; i++) {
-			for (int j = 0; j<13; j++) {
+	  for (int i = 0; i<taille; i++) {
+			for (int j = 0; j<taille; j++) {
 				if (tableaujoueur[i][j]==4) {
 					tableau[i][j]=h;
 				}
@@ -635,8 +646,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 		}
 	  
 	  for (int l = 0; l<10; l++) {
-		  for (int i = 12; i>=0; i--) {
-			  for (int j = 12; j>=0; j--) {
+		  for (int i = (taille-1); i>=0; i--) {
+			  for (int j = (taille-1); j>=0; j--) {
 				  if (tableau[i][j]==h && tableaujoueur[i][j]!=4) {
 						if (((i-1)>=0 && tableaujoueur[i-1][j]==4) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==4) || ((j-1)>=0 && tableaujoueur[i][j-1]==4) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==4)) {
 							tableaujoueur[i][j]=4;
@@ -645,8 +656,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 			  }
 		  }
 		  
-		  for (int i = 0; i<13; i++) {
-				for (int j = 0; j<13; j++) {
+		  for (int i = 0; i<taille; i++) {
+				for (int j = 0; j<taille; j++) {
 					if (tableau[i][j]==h && tableaujoueur[i][j]!=4) {
 						if (((i-1)>=0 && tableaujoueur[i-1][j]==4) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==4) || ((j-1)>=0 && tableaujoueur[i][j-1]==4) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==4)) {
 							tableaujoueur[i][j]=4;
@@ -665,21 +676,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  this.validate();
 	  
 	  int compte = compte(tableaujoueur, 4);
-	  if (compte>=85 && joueur3.getText()=="" && joueur4.getText()=="") {
-		  //this.dispose();
-		  Test.victoire(joueur4.getText(), compte);
-		  redessin(4);
-	  }
-	  else if (compte>=57 && joueur3.getText()!="" && joueur4.getText()=="") {
-		  //this.dispose();
-		  Test.victoire(joueur4.getText(), compte);
-		  redessin(4);
-	  }
-	  else if (compte>=43 && joueur3.getText()!="" && joueur4.getText()!="") {
-		  //this.dispose();
-		  Test.victoire(joueur4.getText(), compte);
-		  redessin(4);
-	  }
+	  victoire(4, compte, joueur4.getText());
 	  score4.setText(Integer.toString(compte));
 	  
 	  joueur = 1;
@@ -972,8 +969,52 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  //si on clique sur jouer, ça ferme la fenêtre de choix d'actions
 	  if (action.getActionCommand()=="jouer") {
 		  choix.dispose();
+		  joue=true;
 	  }
   }
+  
+  public void changement() {
+	  tab.setLayout(new GridLayout(taille, taille));
+	  tableau=tableaujeu();
+	  tableaujoueur=tableaujoueur();
+	  
+	  if (nbrejoueur==3) {
+		  tableaujoueur[0][(taille-1)]=3;
+		  tableau[0][(taille-1)]=7;
+	  }
+	  else if (nbrejoueur==4) {
+		  tableaujoueur[(taille-1)][0]=4;
+		  tableau[(taille-1)][0]=7;
+	  }
+	  redessin(1);
+	  this.getContentPane().add(tab, BorderLayout.CENTER);
+	  this.validate();
+  }
+  
+  class ItemState implements ItemListener {
+	  public void itemStateChanged(ItemEvent e) {
+	      if (e.getItem()=="13x13") {
+	    	  taille=13;
+	      }
+	      else if (e.getItem()=="14x14") {
+	    	  taille=14;
+	      }
+	      else if (e.getItem()=="15x15") {
+	    	  taille=15;
+	      }
+	      else if (e.getItem()=="16x16") {
+	    	  taille=16;
+	      }
+	      else if (e.getItem()=="17x17") {
+	    	  taille=17;
+	      }
+	      else if (e.getItem()=="18x18") {
+	    	  taille=18;
+	      }
+	      changement();
+	    } 
+  }
+  
   //fonction de test utile au debuggage
   public static void tesst() {
 	  System.out.println("ok");
@@ -988,9 +1029,9 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  //modification de son score
 	  score3.setText("1");
 	  //modification du tableau joueurs (permet de saovir d'où il part)
-	  tableaujoueur[0][12]=3;
+	  tableaujoueur[0][(taille-1)]=3;
 	  //modification du tableau jeu (change la couleur là où il commence
-	  tableau[0][12]=7;
+	  tableau[0][(taille-1)]=7;
 	  //on redessine le tableau
 	  choix.remove(ajoutjoueur);
 	  redessin(1);
@@ -1001,8 +1042,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  joueur4.setText("Joueur 4");
 	  joueur4choix.setText("Joueur 4");
 	  score4.setText("1");
-	  tableaujoueur[12][0]=4;
-	  tableau[12][0]=7;
+	  tableaujoueur[(taille-1)][0]=4;
+	  tableau[(taille-1)][0]=7;
 	  redessin(1);
   }
   
@@ -1010,11 +1051,11 @@ public class fenetre13 extends JFrame implements ActionListener {
   public int[][] tableaujeu() {
 	  	//utilisation d'un chiffre random
 		Random rand = new Random();
-		//création d'un tableau 13x13
-		int[][] tableaujeu = new int[13][13];
+		//création d'un tableau taillextaille
+		int[][] tableaujeu = new int[taille][taille];
 		//on parcourt ce tableau
-		for (int i = 0; i<13; i++) {
-			for (int j = 0; j<13; j++) {
+		for (int i = 0; i<taille; i++) {
+			for (int j = 0; j<taille; j++) {
 				//on met un chiffre random partout
 	            int k = rand.nextInt(6)+1;
 				tableaujeu[i][j]=k;
@@ -1022,24 +1063,24 @@ public class fenetre13 extends JFrame implements ActionListener {
 		}
 		//on modifie la couleur des joueurs 1 et 2 pour ne pas lui attribuer de couleur de base
 		tableaujeu[0][0]=7;
-		tableaujeu[12][12]=7;
+		tableaujeu[(taille-1)][(taille-1)]=7;
 		return tableaujeu;
 	}
 	
   	//création du tableau des joueurs
 	public int[][] tableaujoueur() {
-		//création d'un tableau 13x13
-		int[][] tableaujoueur = new int[13][13];
+		//création d'un tableau taillextaille
+		int[][] tableaujoueur = new int[taille][taille];
 		//parcourt du tableau
-		for (int i = 0; i<13; i++) {
-			for (int j = 0; j<13; j++) {
+		for (int i = 0; i<taille; i++) {
+			for (int j = 0; j<taille; j++) {
 				//remplissage avec des 0
 				tableaujoueur[i][j]=0;
 			}
 		}
 		//on modifie les deux coins des joueurs pour dire qu'ils appartiennent au joueur 1 ou 2
 		tableaujoueur[0][0]=1;
-		tableaujoueur[12][12]=2;
+		tableaujoueur[(taille-1)][(taille-1)]=2;
 		
 		return tableaujoueur;
 	}
@@ -1049,8 +1090,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  //on supprime d'abord tout ce qui est dans le tableau précédent
 	  tab.removeAll();
 	  //on parcourt le tableau de jeu
-	  for (int i = 0; i<13; i++) {
-		  for (int j = 0; j<13; j++) {
+	  for (int i = 0; i<taille; i++) {
+		  for (int j = 0; j<taille; j++) {
 			  /*
 			   * en fonction du nombre dans le tableau de jeu
 			   * le bouton qui y est intégré n'a pas la même couleur
@@ -1151,8 +1192,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  try {
 		  //on ouvre un outil pour écrire dans le premier fichier
 		  BufferedWriter writer = new BufferedWriter(new FileWriter(new File(path)));
-		  for (int i = 0; i<13; i++) {
-			  for (int j = 0; j<13; j++) {
+		  for (int i = 0; i<taille; i++) {
+			  for (int j = 0; j<taille; j++) {
 				  //on met un chiffre du tableau de jeu par ligne
 				  writer.write(Integer.toString(tableau[i][j]));
 				  writer.write("\n");
@@ -1162,8 +1203,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 		  
 		  //on fait la même chose pour le tableau des joueurs
 		  BufferedWriter writer2 = new BufferedWriter(new FileWriter(new File(path2)));
-		  for (int i = 0; i<13; i++) {
-			  for (int j = 0; j<13; j++) {
+		  for (int i = 0; i<taille; i++) {
+			  for (int j = 0; j<taille; j++) {
 				  writer2.write(Integer.toString(tableaujoueur[i][j]));
 				  writer2.write("\n");
 			  }
@@ -1172,6 +1213,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 		  
 		  //cette fois on écrit dans le 3ème fichier
 		  BufferedWriter writer3 = new BufferedWriter(new FileWriter(new File(path3)));
+		  writer3.write(Integer.toString(taille));
+		  writer3.write("\n");
 		  //le joueur qui doit jouer
 		  writer3.write(Integer.toString(joueur));
 		  writer3.write("\n");
@@ -1292,8 +1335,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  //création d'un tableau dans lequel on stockera les scores de chaque couleur
 	  int[] nbre = {0,0,0,0,0,0};
 	  //on parcourt la grille pour trouver les couleurs collées au territoire du joueur
-	  for (int i = 0; i<13; i++) {
-			for (int j = 0; j<13; j++) {
+	  for (int i = 0; i<taille; i++) {
+			for (int j = 0; j<taille; j++) {
 				if (tableaujoueur[i][j]!=c) {
 					if (((i-1)>=0 && tableaujoueur[i-1][j]==c) || ((i+1)<tableaujoueur.length && tableaujoueur[i+1][j]==c) || ((j-1)>=0 && tableaujoueur[i][j-1]==c) || ((j+1)<tableaujoueur.length && tableaujoueur[i][j+1]==c)) {
 						//appel d'une fonction qui va permettre de savoir s'il s'agit d'une case seule ou d'un bloc

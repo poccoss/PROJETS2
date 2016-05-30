@@ -6,11 +6,14 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener; 
+import java.awt.event.ActionListener;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream; 
 
 
 public class Victoire extends JFrame {
 
+	
   public Victoire(String nom, int h){
 	  this.setTitle("victoire");
 	  this.setSize(650, 300);
@@ -60,7 +63,5 @@ public class Victoire extends JFrame {
 	  
 	  this.getContentPane().add(fin);
 	  this.setVisible(true);
-	  
-
   }
 }

@@ -1,6 +1,5 @@
 import java.awt.GridLayout;
 import java.awt.Dimension;
-import javax.swing.JTextField; 
 import java.util.Random;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -15,10 +14,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
 import java.io.*;
+import java.net.URL;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.net.URL;
 
 //utilisation d'un exteends JFrame pour permettre la création de fenêtre en swing
 //implémentation d'ActionListener qui permettra d'utiliser les boutons
@@ -52,6 +54,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	JPanel tab = new JPanel();
 	JPanel scores = new JPanel();
 	JPanel choix2 = new JPanel();
+	
 	JButton sauvegarde = new JButton("Sauvegarder et quitter");
 	JButton ajoutjoueur = new JButton("ajouter un joueur 3"); //boutons permettant l'ajout de joueurs
 	JButton ajoutjoueur4 = new JButton("ajouter un joueur 4");
@@ -183,7 +186,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	
 	public fenetre13(){
 	  this.setTitle("JEU");
-	  this.setSize(650, 650);
+	  this.setSize(800, 700);
 	  //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  this.setLocationRelativeTo(null);
 	  
@@ -229,8 +232,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  score4.setForeground(Color.black);
 	  score4.setHorizontalAlignment(JLabel.CENTER);
 	  
-	  sauvegarde.setActionCommand("sauvegarde");
-	  sauvegarde.addActionListener(this);
+	  
 	  //la partie EAST de la fenêtre regroupe les scores et noms des joueurs, que j'ajoute avec les lignes suivantes
 	  scores.setLayout(new BoxLayout(scores, BoxLayout.PAGE_AXIS));
 	  scores.add(joueur1);
@@ -243,6 +245,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  scores.add(score4);
 	  scores.add(sauvegarde);
 	  scores.add(explication);
+
 	  
 	  /*
 	   * on ajoute aux points cardinaux les éléments qu'on veut
@@ -1168,6 +1171,7 @@ public class fenetre13 extends JFrame implements ActionListener {
   //fonction pour sauvegarder la partie
   public void sauvegarde() {
 	  //on a les chemins suivants vers 3 fichiers texte
+	  
 	  String path = "sauvegardes/partie13carre/sauvegarde.txt";
 	  String path2 = "sauvegardes/partie13carre/sauvegardejoueur.txt";
 	  String path3 = "sauvegardes/partie13carre/joueur.txt";
@@ -1306,7 +1310,7 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  Random rand = new Random();
 	  int k = h;
 	  //on cherche un chiffre tant que le chiffre trouvé est celui d'un autre joueur
-	  while (k==h) {
+	  while (k==h && k==u && k==p && k==m) {
 		  k = rand.nextInt(6)+1;
 	  }
 	  return k;
@@ -1407,8 +1411,8 @@ public class fenetre13 extends JFrame implements ActionListener {
 	  
 	  //récupération de la couleur pour laquelle le score est le plus grand, en évitant les couelurs des autres joueurs
 	  
-	  int k = 0;
-	  int max = 0;
+	  int k = -1;
+	  int max = -1;
 	  for (int i = 0; i<6; i++) {
 		  if (nbre[i]>max && (i+1)!=h && (i+1)!=m && (i+1)!=p && (i+1)!=u) {
 			  max = nbre[i];

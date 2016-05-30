@@ -113,21 +113,26 @@ public class fenetrelos extends JFrame implements ActionListener {
 		jouer.addActionListener(this);
 		
 		//on ajoute les boutons configurés au panel choix2
+		choix2.add(new JLabel("\n"));
 		choix2.add(joueur1choix);
+		choix2.add(new JLabel("\n"));
 		panjoueur2.add(joueur2choix);
 		panjoueur2.add(IAdifficile1);
 		panjoueur2.add(IAfacile1);
 		choix2.add(panjoueur2);
+		choix2.add(new JLabel("\n"));
 		panjoueur3.add(joueur3choix);
 		panjoueur3.add(IAdifficile2);
 		panjoueur3.add(IAfacile2);
 		panjoueur3.add(ajoutjoueur);
 		choix2.add(panjoueur3);
+		choix2.add(new JLabel("\n"));
 		panjoueur4.add(joueur4choix);
 		panjoueur4.add(IAdifficile3);
 		panjoueur4.add(IAfacile3);
 		panjoueur4.add(ajoutjoueur4);
 		choix2.add(panjoueur4);
+		choix2.add(new JLabel("\n"));
 		panjouer.add(jouer);
 		choix2.add(panjouer);
 		
@@ -138,7 +143,7 @@ public class fenetrelos extends JFrame implements ActionListener {
 	
 	public fenetrelos(){
 	  this.setTitle("JEU");
-	  this.setSize(650, 650);
+	  this.setSize(700, 700);
 	  //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  this.setLocationRelativeTo(null);
 	  
@@ -216,7 +221,7 @@ public class fenetrelos extends JFrame implements ActionListener {
 	  return somme;
   }
   
-
+  
   
   public void joueur1(int h) {
 	  //lorsque le premier joueur joue, on s'assure de fermer la fenêtre permettant d'ajouter des joueurs
@@ -1243,7 +1248,7 @@ public class fenetrelos extends JFrame implements ActionListener {
 	  Random rand = new Random();
 	  int k = h;
 	  //on cherche un chiffre tant que le chiffre trouvé est celui d'un autre joueur
-	  while (k==h) {
+	  while (k==h && k==u && k==p && k==m) {
 		  k = rand.nextInt(6)+1;
 	  }
 	  return k;
@@ -1342,8 +1347,8 @@ public class fenetrelos extends JFrame implements ActionListener {
 	  }
 	  
 	  
-	  int k = 0;
-	  int max = 0;
+	  int k = -1;
+	  int max = -1;
 	  for (int i = 0; i<6; i++) {
 		  if (nbre[i]>max && (i+1)!=h && (i+1)!=m && (i+1)!=p && (i+1)!=u) {
 			  max = nbre[i];

@@ -11,24 +11,26 @@ import java.awt.event.ActionListener;
 
 public class Fenetre extends JFrame implements ActionListener {
 	
-  public Fenetre(){
+  public Fenetre(){ 
+	  
 	  this.setTitle("JEU");
-	  this.setSize(650, 650);
+	  this.setSize(700, 500);
 	  this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  this.setLocationRelativeTo(null);
-	  
 	  JPanel premiertexte = new JPanel();
 	  //On définit le layout en lui indiquant qu'il travaillera en ligne
 	  premiertexte.setLayout(new BoxLayout(premiertexte, BoxLayout.LINE_AXIS));
 	  JLabel bienvenue = new JLabel("Bienvenue");
 	  bienvenue.setFont(new Font("Tahoma", Font.BOLD, 50));
 	  premiertexte.add(bienvenue);
+	  premiertexte.setBackground(Color.WHITE);
 	  
 	  JPanel deuxiemetexte = new JPanel();
 	  deuxiemetexte.setLayout(new BoxLayout(deuxiemetexte, BoxLayout.LINE_AXIS));
 	  JLabel joueurVSjoueur = new JLabel("Comment voulez vous jouer ?");
 	  joueurVSjoueur.setFont(new Font("Tahoma", Font.BOLD, 40));
 	  deuxiemetexte.add(joueurVSjoueur);
+	  deuxiemetexte.setBackground(Color.WHITE);
 	  
 	  JPanel partie13 = new JPanel();
 	  //Idem pour cette ligne
@@ -43,7 +45,7 @@ public class Fenetre extends JFrame implements ActionListener {
 	  JPanel partiesauv = new JPanel();
 	  //Idem pour cette ligne
 	  partiesauv.setLayout(new BoxLayout(partiesauv, BoxLayout.LINE_AXIS));
-	  JButton partiesauv13 = new JButton("terminer la partie en cours");
+	  JButton partiesauv13 = new JButton("terminer la partie sauvegardée (carrée)");
 	  partiesauv13.setBackground(Color.green);
 	  partiesauv13.addActionListener(this);
 	  partiesauv13.setFont(new Font("Tahoma", Font.BOLD, 30));
@@ -53,7 +55,7 @@ public class Fenetre extends JFrame implements ActionListener {
 	  JPanel partielo = new JPanel();
 	  //Idem pour cette ligne
 	  partielo.setLayout(new BoxLayout(partielo, BoxLayout.LINE_AXIS));
-	  JButton jouerlo = new JButton("Grille losange");
+	  JButton jouerlo = new JButton("Grille losange (taille unique)");
 	  jouerlo.setBackground(Color.yellow);
 	  jouerlo.addActionListener(this);
 	  jouerlo.setFont(new Font("Tahoma", Font.BOLD, 30));
@@ -63,32 +65,29 @@ public class Fenetre extends JFrame implements ActionListener {
 	  JPanel partielosau = new JPanel();
 	  //Idem pour cette ligne
 	  partielosau.setLayout(new BoxLayout(partielosau, BoxLayout.LINE_AXIS));
-	  JButton jouerlosau = new JButton("Reprendre la partie précédente");
+	  JButton jouerlosau = new JButton("Terminer la partie sauvegardée (losange)");
 	  jouerlosau.setBackground(Color.magenta);
 	  jouerlosau.addActionListener(this);
 	  jouerlosau.setFont(new Font("Tahoma", Font.BOLD, 30));
 	  jouerlosau.setActionCommand("jouerlosau");
 	  partielosau.add(jouerlosau);
 	  
-	  JLabel espace = new JLabel("\n");
-	  JLabel espace1 = new JLabel("\n");
-	  JLabel espace2 = new JLabel("\n");
-	  JLabel espace3 = new JLabel("\n");
+
 	  
 	  JPanel fin = new JPanel();
 	  //On positionne maintenant ces trois lignes en colonne
 	  fin.setLayout(new BoxLayout(fin, BoxLayout.PAGE_AXIS));
 	  fin.add(premiertexte);
 	  fin.add(deuxiemetexte);
-	  fin.add(espace);
+	  fin.add(new JLabel("\n"));
 	  fin.add(partie13);
-	  fin.add(espace1);
+	  fin.add(new JLabel("\n"));
 	  fin.add(partiesauv);
-	  fin.add(espace2);
+	  fin.add(new JLabel("\n"));
 	  fin.add(partielo);
-	  fin.add(espace3);
+	  fin.add(new JLabel("\n"));
 	  fin.add(partielosau);
-	  
+	  fin.setBackground(Color.WHITE);
 	  
 	  
 	  this.getContentPane().add(fin);

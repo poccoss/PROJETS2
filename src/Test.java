@@ -1,8 +1,28 @@
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.File;
+import java.net.URL;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 public class Test {
-
+	
 	public static void main(String[] args) {
 		initialisation();
+		for (int i=0; i<20; i++) {
+			musique();
+		}
+	}
+
+	public static void musique() {
+		try {
+			URL url = Test.class.getResource("musique.mp3");
+			InputStream audioIn = url.openStream();
+			new Player(audioIn).play();
+		}
+		catch (Exception e) {
+			
+		}
 	}
 	
 	public static void initialisation() {

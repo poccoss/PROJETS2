@@ -68,7 +68,7 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	
 	public fenetre13sau(){
 	  this.setTitle("JEU");
-	  this.setSize(650, 650);
+	  this.setSize(700, 700);
 	  //this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  this.setLocationRelativeTo(null);
 	  
@@ -1074,7 +1074,7 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  Random rand = new Random();
 	  int k = h;
 	  //on cherche un chiffre tant que le chiffre trouvé est celui d'un autre joueur
-	  while (k==h) {
+	  while (k==h && k==u && k==p && k==m) {
 		  k = rand.nextInt(6)+1;
 	  }
 	  return k;
@@ -1171,8 +1171,8 @@ public class fenetre13sau extends JFrame implements ActionListener {
 	  }
 	  
 	  
-	  int k = 0;
-	  int max = 0;
+	  int k = -1;
+	  int max = -1;
 	  for (int i = 0; i<6; i++) {
 		  if (nbre[i]>max && (i+1)!=h && (i+1)!=m && (i+1)!=p && (i+1)!=u) {
 			  max = nbre[i];
